@@ -1,5 +1,7 @@
 # NEXUS-BI
 
+[![ci](https://github.com/ArchLinuxAddict/nexus-bi/actions/workflows/ci.yml/badge.svg)](https://github.com/ArchLinuxAddict/nexus-bi/actions/workflows/ci.yml)
+
 NEXUS-BI is a **tool-first binary intelligence system** with one residual model
 for the gaps deterministic tools cannot close. Ghidra, JADX, CFR and native JNI
 analysis own reconstruction; the residual model repairs and ranks their output.
