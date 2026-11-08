@@ -15,9 +15,7 @@ jobs:
       - name: Install CPU PyTorch
         run: pip install torch --index-url https://download.pytorch.org/whl/cpu
       - name: Install project
-        run: |
-          pip install numpy fastapi uvicorn pydantic jsonschema pyelftools python-multipart pytest httpx ruff
-          pip install -e . --no-deps
+        run: pip install -e ".[model,dev]"
       - name: Prepare test paths
         run: mkdir -p artifacts/dataset/realworld_so
       - name: Lint
