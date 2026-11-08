@@ -1,0 +1,24 @@
+{
+  "datasets": {
+    "c": 1341,
+    "java": 564,
+    "jni": 19
+  },
+  "languages": {
+    "c": 1341,
+    "java": 583
+  },
+  "samples": 1924,
+  "schema_version": "nexus.residual-combined/v1",
+  "sources": {},
+  "splits": {
+    "test": 340,
+    "train": 1427,
+    "validation": 157
+  },
+  "tools": {
+    "cfr": 282,
+    "ghidra_headless": 1360,
+    "jadx": 282
+  }
+}

@@ -1,0 +1,862 @@
+{
+  "schema_version": "0.1.0",
+  "pilot_id": "acquisition_projects_v1",
+  "protocol": {
+    "max_projects": 30,
+    "max_download_bytes": 1500000000,
+    "max_storage_bytes": 4000000000,
+    "max_archive_bytes": 80000000,
+    "max_extract_files": 20000,
+    "max_extract_bytes": 1000000000,
+    "license_policy": "permissive-only allowlist; unknown, ambiguous, copyleft and source-available licenses are quarantined",
+    "allowed_licenses": [
+      "MIT",
+      "BSD-2-Clause",
+      "BSD-3-Clause",
+      "Apache-2.0",
+      "ISC",
+      "Unlicense",
+      "CC0-1.0",
+      "Zlib",
+      "0BSD",
+      "WTFPL"
+    ],
+    "deduplication": "exact archive + source-file hash + 64-dimension 5-token MinHash against the historical 109-project corpus and within-pilot",
+    "resumability": "per-project stage state plus resumable HTTP Range downloads and content-hash verification",
+    "historical_dataset": "artifacts/dataset/realworld_v6_pilot2",
+    "category_balance_target": "no category above 25 percent of accepted projects",
+    "exclusions": [
+      "GPL",
+      "AGPL",
+      "LGPL",
+      "MPL",
+      "source-available",
+      "unknown licensing",
+      "duplicate projects",
+      "vendored mirrors"
+    ],
+    "notes": [
+      "Repository commits are pinned and recorded.",
+      "Controlled build recipes are explicit; upstream build systems are not silently substituted.",
+      "Public accessibility is not treated as training permission.",
+      "No behavioral execution is performed in this phase."
+    ]
+  },
+  "projects": [
+    {
+      "project_id": "samurai_build",
+      "adapter": "github",
+      "repository": "michaelforney/samurai",
+      "canonical_url": "https://github.com/michaelforney/samurai",
+      "ref": "HEAD",
+      "commit": "b37524dbb762adfd140e5c306fc4b1aa258971bf",
+      "category": "systems",
+      "description": "Small ninja-compatible build system implemented in C.",
+      "topics": [
+        "build-system",
+        "systems",
+        "c"
+      ],
+      "expected_license": "Apache-2.0",
+      "build_recipe": {
+        "kind": "executable",
+        "sources": [
+          "build.c",
+          "deps.c",
+          "env.c",
+          "graph.c",
+          "htab.c",
+          "log.c",
+          "os-posix.c",
+          "parse.c",
+          "scan.c",
+          "tool.c",
+          "tree.c",
+          "util.c",
+          "samu.c"
+        ],
+        "auto_include": false,
+        "auxiliary": true
+      }
+    },
+    {
+      "project_id": "mimalloc_allocator",
+      "adapter": "github",
+      "repository": "microsoft/mimalloc",
+      "canonical_url": "https://github.com/microsoft/mimalloc",
+      "ref": "HEAD",
+      "commit": "dcd6f09b1d878e06d62949dabea3417eec98c89a",
+      "category": "systems",
+      "description": "Compact general-purpose memory allocator.",
+      "topics": [
+        "allocator",
+        "memory",
+        "systems",
+        "c"
+      ],
+      "expected_license": "MIT",
+      "build_recipe": {
+        "kind": "shared",
+        "sources": [
+          "src/static.c"
+        ],
+        "include": [
+          "include",
+          "src"
+        ],
+        "defines": [
+          "MI_STATIC_LIB"
+        ],
+        "auto_include": false,
+        "auxiliary": true
+      }
+    },
+    {
+      "project_id": "chibicc_compiler",
+      "adapter": "github",
+      "repository": "rui314/chibicc",
+      "canonical_url": "https://github.com/rui314/chibicc",
+      "ref": "HEAD",
+      "commit": "90d1f7f199cc55b13c7fdb5839d1409806633fdb",
+      "category": "systems",
+      "description": "Small C compiler with a complete front end and code generator.",
+      "topics": [
+        "compiler",
+        "systems",
+        "c"
+      ],
+      "expected_license": "MIT",
+      "build_recipe": {
+        "kind": "executable",
+        "sources": [
+          "codegen.c",
+          "hashmap.c",
+          "main.c",
+          "parse.c",
+          "preprocess.c",
+          "strings.c",
+          "tokenize.c",
+          "type.c",
+          "unicode.c"
+        ],
+        "auto_include": false,
+        "auxiliary": true
+      }
+    },
+    {
+      "project_id": "facil_io",
+      "adapter": "github",
+      "repository": "boazsegev/facil.io",
+      "canonical_url": "https://github.com/boazsegev/facil.io",
+      "ref": "HEAD",
+      "commit": "5128747363055201d3ecf0e29bf0a961703c9fa0",
+      "category": "networking",
+      "description": "Evented networking and protocol framework for C.",
+      "topics": [
+        "networking",
+        "http",
+        "websocket",
+        "c"
+      ],
+      "expected_license": "MIT",
+      "build_recipe": {
+        "kind": "shared",
+        "sources": [
+          "lib/facil/fio.c",
+          "lib/facil/fiobj/fiobj_ary.c",
+          "lib/facil/fiobj/fiobj_data.c",
+          "lib/facil/fiobj/fiobject.c",
+          "lib/facil/fiobj/fiobj_hash.c",
+          "lib/facil/fiobj/fiobj_json.c",
+          "lib/facil/fiobj/fiobj_mustache.c",
+          "lib/facil/fiobj/fiobj_numbers.c",
+          "lib/facil/fiobj/fiobj_str.c",
+          "lib/facil/fiobj/fio_siphash.c",
+          "lib/facil/http/http1.c",
+          "lib/facil/http/http.c",
+          "lib/facil/http/http_internal.c",
+          "lib/facil/http/websockets.c",
+          "lib/facil/tls/fio_tls_missing.c"
+        ],
+        "include": [
+          "lib/facil",
+          "lib/facil/fiobj",
+          "lib/facil/http",
+          "lib/facil/http/parsers",
+          "lib/facil/tls",
+          "lib/facil/redis"
+        ],
+        "auto_include": false,
+        "auxiliary": true
+      }
+    },
+    {
+      "project_id": "libjuice_ice",
+      "adapter": "github",
+      "repository": "paullouisageneau/libjuice",
+      "canonical_url": "https://github.com/paullouisageneau/libjuice",
+      "ref": "HEAD",
+      "commit": "cb523763255f241442da1fbdd72c498f33a54b35",
+      "category": "networking",
+      "description": "Lightweight ICE/STUN/TURN networking library.",
+      "topics": [
+        "networking",
+        "ice",
+        "stun",
+        "c"
+      ],
+      "expected_license": "MIT",
+      "build_recipe": {
+        "kind": "shared",
+        "sources": [
+          "src/addr.c",
+          "src/agent.c",
+          "src/base64.c",
+          "src/conn.c",
+          "src/conn_mux.c",
+          "src/conn_poll.c",
+          "src/conn_thread.c",
+          "src/const_time.c",
+          "src/crc32.c",
+          "src/hash.c",
+          "src/hmac.c",
+          "src/ice.c",
+          "src/juice.c",
+          "src/log.c",
+          "src/random.c",
+          "src/server.c",
+          "src/stun.c",
+          "src/tcp.c",
+          "src/timestamp.c",
+          "src/turn.c",
+          "src/udp.c"
+        ],
+        "include": [
+          "include",
+          "include/juice",
+          "src"
+        ],
+        "auto_include": false,
+        "auxiliary": true
+      }
+    },
+    {
+      "project_id": "parson_json",
+      "adapter": "github",
+      "repository": "kgabis/parson",
+      "canonical_url": "https://github.com/kgabis/parson",
+      "ref": "HEAD",
+      "commit": "ec53fb6528b45811df9db0db22cab96a94a96a11",
+      "category": "parsing",
+      "description": "Lightweight JSON parser and serializer.",
+      "topics": [
+        "json",
+        "parser",
+        "c"
+      ],
+      "expected_license": "MIT",
+      "build_recipe": {
+        "kind": "shared",
+        "sources": [
+          "parson.c"
+        ],
+        "auto_include": false,
+        "auxiliary": true
+      }
+    },
+    {
+      "project_id": "cjson_parser",
+      "adapter": "github",
+      "repository": "DaveGamble/cJSON",
+      "canonical_url": "https://github.com/DaveGamble/cJSON",
+      "ref": "HEAD",
+      "commit": "6d9f2443ab071f86e5d9b43025a40929ec41c46c",
+      "category": "parsing",
+      "description": "Ultralightweight JSON parser in ANSI C.",
+      "topics": [
+        "json",
+        "parser",
+        "c"
+      ],
+      "expected_license": "MIT",
+      "build_recipe": {
+        "kind": "shared",
+        "sources": [
+          "cJSON.c",
+          "cJSON_Utils.c"
+        ],
+        "auto_include": false,
+        "auxiliary": true
+      }
+    },
+    {
+      "project_id": "mpc_parser_combinators",
+      "adapter": "github",
+      "repository": "orangeduck/mpc",
+      "canonical_url": "https://github.com/orangeduck/mpc",
+      "ref": "HEAD",
+      "commit": "1049534fc56b1971345c7aaa792dea55d6f9b7bc",
+      "category": "parsing",
+      "description": "Parser combinator library for C.",
+      "topics": [
+        "parser",
+        "combinator",
+        "c"
+      ],
+      "expected_license": "BSD-2-Clause",
+      "build_recipe": {
+        "kind": "shared",
+        "sources": [
+          "mpc.c"
+        ],
+        "libraries": [
+          "-lm"
+        ],
+        "auto_include": false,
+        "auxiliary": true
+      }
+    },
+    {
+      "project_id": "tinyexpr_parser",
+      "adapter": "github",
+      "repository": "codeplea/tinyexpr",
+      "canonical_url": "https://github.com/codeplea/tinyexpr",
+      "ref": "HEAD",
+      "commit": "ba2e32bbcc2d1e644a7e132d24c2f542821cabe0",
+      "category": "parsing",
+      "description": "Small recursive-descent math expression parser.",
+      "topics": [
+        "parser",
+        "expression",
+        "math",
+        "c"
+      ],
+      "expected_license": "Zlib",
+      "build_recipe": {
+        "kind": "shared",
+        "sources": [
+          "tinyexpr.c"
+        ],
+        "libraries": [
+          "-lm"
+        ],
+        "auto_include": false,
+        "auxiliary": true
+      }
+    },
+    {
+      "project_id": "brieflz_compression",
+      "adapter": "github",
+      "repository": "jibsen/brieflz",
+      "canonical_url": "https://github.com/jibsen/brieflz",
+      "ref": "HEAD",
+      "commit": "ad89acf4186adca8ad8c27c4ab376a49ae233cd0",
+      "category": "compression",
+      "description": "Small LZ77-style compression library.",
+      "topics": [
+        "compression",
+        "lz77",
+        "c"
+      ],
+      "expected_license": "Zlib",
+      "build_recipe": {
+        "kind": "shared",
+        "sources": [
+          "src/brieflz.c"
+        ],
+        "include": [
+          "include",
+          "src"
+        ],
+        "auto_include": false,
+        "auxiliary": true
+      }
+    },
+    {
+      "project_id": "libdeflate_compression",
+      "adapter": "github",
+      "repository": "ebiggers/libdeflate",
+      "canonical_url": "https://github.com/ebiggers/libdeflate",
+      "ref": "HEAD",
+      "commit": "0758d0a12d34fac281b0fe27c5155fbe753d9511",
+      "category": "compression",
+      "description": "Fast DEFLATE/gzip/zlib compression library.",
+      "topics": [
+        "compression",
+        "deflate",
+        "gzip",
+        "c"
+      ],
+      "expected_license": "MIT",
+      "build_recipe": {
+        "kind": "shared",
+        "sources": [
+          "lib/adler32.c",
+          "lib/crc32.c",
+          "lib/deflate_compress.c",
+          "lib/deflate_decompress.c",
+          "lib/gzip_compress.c",
+          "lib/gzip_decompress.c",
+          "lib/utils.c",
+          "lib/zlib_compress.c",
+          "lib/zlib_decompress.c"
+        ],
+        "include": [
+          "lib",
+          "include"
+        ],
+        "auto_include": false,
+        "auxiliary": true
+      }
+    },
+    {
+      "project_id": "lz4_compression",
+      "adapter": "github",
+      "repository": "lz4/lz4",
+      "canonical_url": "https://github.com/lz4/lz4",
+      "ref": "HEAD",
+      "commit": "0abbf9f346b029529a7bec7c9a2e7f5595e2b5e2",
+      "category": "compression",
+      "description": "Fast LZ4 compression library.",
+      "topics": [
+        "compression",
+        "lz4",
+        "c"
+      ],
+      "expected_license": "BSD-2-Clause",
+      "build_recipe": {
+        "kind": "shared",
+        "sources": [
+          "lib/lz4.c",
+          "lib/lz4hc.c",
+          "lib/lz4frame.c",
+          "lib/xxhash.c"
+        ],
+        "include": [
+          "lib"
+        ],
+        "auto_include": false,
+        "auxiliary": true
+      },
+      "license_ignore": [
+        "programs/",
+        "examples/",
+        "tests/",
+        "contrib/"
+      ]
+    },
+    {
+      "project_id": "zlib_compression",
+      "adapter": "github",
+      "repository": "madler/zlib",
+      "canonical_url": "https://github.com/madler/zlib",
+      "ref": "HEAD",
+      "commit": "aaa772ce5c6d0023204c6ee45c59cf70c8372c51",
+      "category": "compression",
+      "description": "Reference zlib DEFLATE implementation.",
+      "topics": [
+        "compression",
+        "zlib",
+        "deflate",
+        "c"
+      ],
+      "expected_license": "Zlib",
+      "build_recipe": {
+        "kind": "shared",
+        "sources": [
+          "adler32.c",
+          "compress.c",
+          "crc32.c",
+          "deflate.c",
+          "gzclose.c",
+          "gzlib.c",
+          "gzread.c",
+          "gzwrite.c",
+          "infback.c",
+          "inffast.c",
+          "inflate.c",
+          "inftrees.c",
+          "trees.c",
+          "uncompr.c",
+          "zutil.c"
+        ],
+        "auto_include": false,
+        "auxiliary": true
+      }
+    },
+    {
+      "project_id": "tiny_aes",
+      "adapter": "github",
+      "repository": "kokke/tiny-AES-c",
+      "canonical_url": "https://github.com/kokke/tiny-AES-c",
+      "ref": "HEAD",
+      "commit": "23856752fbd139da0b8ca6e471a13d5bcc99a08d",
+      "category": "cryptography",
+      "description": "Small portable AES implementation.",
+      "topics": [
+        "cryptography",
+        "aes",
+        "c"
+      ],
+      "expected_license": "Unlicense",
+      "build_recipe": {
+        "kind": "shared",
+        "sources": [
+          "aes.c"
+        ],
+        "auto_include": false,
+        "auxiliary": true
+      }
+    },
+    {
+      "project_id": "monocypher_crypto",
+      "adapter": "github",
+      "repository": "LoupVaillant/Monocypher",
+      "canonical_url": "https://github.com/LoupVaillant/Monocypher",
+      "ref": "HEAD",
+      "commit": "907e90ddd4c78f02e0d49e90384e4197f7dcdf26",
+      "category": "cryptography",
+      "description": "Small auditable cryptographic library.",
+      "topics": [
+        "cryptography",
+        "x25519",
+        "ed25519",
+        "c"
+      ],
+      "expected_license": "BSD-2-Clause",
+      "build_recipe": {
+        "kind": "shared",
+        "sources": [
+          "src/monocypher.c"
+        ],
+        "include": [
+          "src"
+        ],
+        "auto_include": false,
+        "auxiliary": true
+      }
+    },
+    {
+      "project_id": "ed25519_signatures",
+      "adapter": "github",
+      "repository": "orlp/ed25519",
+      "canonical_url": "https://github.com/orlp/ed25519",
+      "ref": "HEAD",
+      "commit": "b1f19fab4aebe607805620d25a5e42566ce46a0e",
+      "category": "cryptography",
+      "description": "Portable Ed25519 signature implementation.",
+      "topics": [
+        "cryptography",
+        "ed25519",
+        "signatures",
+        "c"
+      ],
+      "expected_license": "Zlib",
+      "build_recipe": {
+        "kind": "shared",
+        "sources": [
+          "src/add_scalar.c",
+          "src/fe.c",
+          "src/ge.c",
+          "src/key_exchange.c",
+          "src/keypair.c",
+          "src/sc.c",
+          "src/sha512.c",
+          "src/sign.c",
+          "src/verify.c",
+          "src/seed.c"
+        ],
+        "include": [
+          "src"
+        ],
+        "auto_include": false,
+        "auxiliary": true
+      }
+    },
+    {
+      "project_id": "hashmap_c",
+      "adapter": "github",
+      "repository": "tidwall/hashmap.c",
+      "canonical_url": "https://github.com/tidwall/hashmap.c",
+      "ref": "HEAD",
+      "commit": "3735986914fc1c4e6a9123b406d0970666aa4aec",
+      "category": "data_structures",
+      "description": "Open-addressing hash map in C.",
+      "topics": [
+        "data-structures",
+        "hashmap",
+        "c"
+      ],
+      "expected_license": "MIT",
+      "build_recipe": {
+        "kind": "shared",
+        "sources": [
+          "hashmap.c"
+        ],
+        "auto_include": false,
+        "auxiliary": true
+      }
+    },
+    {
+      "project_id": "btree_c",
+      "adapter": "github",
+      "repository": "tidwall/btree.c",
+      "canonical_url": "https://github.com/tidwall/btree.c",
+      "ref": "HEAD",
+      "commit": "48634e841e32c7c1e91d5319002bab4f5f8842f0",
+      "category": "data_structures",
+      "description": "B-tree implementation in C.",
+      "topics": [
+        "data-structures",
+        "btree",
+        "c"
+      ],
+      "expected_license": "MIT",
+      "build_recipe": {
+        "kind": "shared",
+        "sources": [
+          "btree.c"
+        ],
+        "auto_include": false,
+        "auxiliary": true
+      }
+    },
+    {
+      "project_id": "clibs_list",
+      "adapter": "github",
+      "repository": "clibs/list",
+      "canonical_url": "https://github.com/clibs/list",
+      "ref": "HEAD",
+      "commit": "a86671d0e116b7d89cb191762152b29d39b44ed6",
+      "category": "data_structures",
+      "description": "Doubly linked list library in C.",
+      "topics": [
+        "data-structures",
+        "list",
+        "c"
+      ],
+      "expected_license": "MIT",
+      "build_recipe": {
+        "kind": "shared",
+        "sources": [
+          "src/list.c",
+          "src/list_iterator.c",
+          "src/list_node.c"
+        ],
+        "include": [
+          "src"
+        ],
+        "auto_include": false,
+        "auxiliary": true
+      }
+    },
+    {
+      "project_id": "nnn_file_manager",
+      "adapter": "github",
+      "repository": "jarun/nnn",
+      "canonical_url": "https://github.com/jarun/nnn",
+      "ref": "HEAD",
+      "commit": "9d9df122bb8c053fecf9fa1b265b6d5144983564",
+      "category": "utilities",
+      "description": "Terminal file manager.",
+      "topics": [
+        "utility",
+        "file-manager",
+        "terminal",
+        "c"
+      ],
+      "expected_license": "BSD-2-Clause",
+      "build_recipe": {
+        "kind": "executable",
+        "sources": [
+          "src/nnn.c"
+        ],
+        "include": [
+          "src"
+        ],
+        "libraries": [
+          "-lreadline",
+          "-lncursesw",
+          "-lpthread"
+        ],
+        "auto_include": false,
+        "auxiliary": true
+      }
+    },
+    {
+      "project_id": "entr_file_watcher",
+      "adapter": "github",
+      "repository": "eradman/entr",
+      "canonical_url": "https://github.com/eradman/entr",
+      "ref": "HEAD",
+      "commit": "2756c12a82c872a74e6d7df40da1611381221c45",
+      "category": "utilities",
+      "description": "Run arbitrary commands when files change.",
+      "topics": [
+        "utility",
+        "file-watcher",
+        "c"
+      ],
+      "expected_license": "ISC",
+      "build_recipe": {
+        "kind": "executable",
+        "sources": [
+          "entr.c",
+          "status.c",
+          "missing/kqueue_inotify.c"
+        ],
+        "include": [
+          ".",
+          "missing"
+        ],
+        "defines": [
+          "_LINUX_PORT",
+          "RELEASE=\"5.9\""
+        ],
+        "libraries": [
+          "-lpthread"
+        ],
+        "auto_include": false,
+        "auxiliary": true
+      }
+    },
+    {
+      "project_id": "quickjs_runtime",
+      "adapter": "github",
+      "repository": "bellard/quickjs",
+      "canonical_url": "https://github.com/bellard/quickjs",
+      "ref": "HEAD",
+      "commit": "712e8c0ca26949477c38f91dbaf955cc48e2f261",
+      "category": "runtime_libraries",
+      "description": "Small embeddable JavaScript engine.",
+      "topics": [
+        "runtime",
+        "javascript",
+        "interpreter",
+        "c"
+      ],
+      "expected_license": "MIT",
+      "build_recipe": {
+        "kind": "shared",
+        "sources": [
+          "quickjs.c",
+          "dtoa.c",
+          "libregexp.c",
+          "libunicode.c",
+          "cutils.c",
+          "quickjs-libc.c"
+        ],
+        "defines": [
+          "CONFIG_VERSION=\"2026-06-04\""
+        ],
+        "libraries": [
+          "-lm",
+          "-ldl",
+          "-pthread"
+        ],
+        "auto_include": false,
+        "auxiliary": true
+      }
+    },
+    {
+      "project_id": "wasm3_runtime",
+      "adapter": "github",
+      "repository": "wasm3/wasm3",
+      "canonical_url": "https://github.com/wasm3/wasm3",
+      "ref": "HEAD",
+      "commit": "28ecb9af6d2040e474a70f7cb7f43666740141fb",
+      "category": "runtime_libraries",
+      "description": "WebAssembly interpreter.",
+      "topics": [
+        "runtime",
+        "webassembly",
+        "interpreter",
+        "c"
+      ],
+      "expected_license": "MIT",
+      "build_recipe": {
+        "kind": "shared",
+        "sources": [
+          "source/m3_bind.c",
+          "source/m3_code.c",
+          "source/m3_compile.c",
+          "source/m3_core.c",
+          "source/m3_deterministic.c",
+          "source/m3_env.c",
+          "source/m3_exec.c",
+          "source/m3_function.c",
+          "source/m3_info.c",
+          "source/m3_module.c",
+          "source/m3_parse.c",
+          "source/m3_snapshot.c",
+          "source/m3_validate.c",
+          "source/m3_xxh64.c",
+          "source/extensions/m3_extensions.c",
+          "source/m3_api_libc.c"
+        ],
+        "include": [
+          "source"
+        ],
+        "libraries": [
+          "-lm"
+        ],
+        "auto_include": false,
+        "auxiliary": true
+      }
+    },
+    {
+      "project_id": "tree_sitter_runtime",
+      "adapter": "github",
+      "repository": "tree-sitter/tree-sitter",
+      "canonical_url": "https://github.com/tree-sitter/tree-sitter",
+      "ref": "HEAD",
+      "commit": "9632b561db2f647e9c0be9e61cf91f10671a6491",
+      "category": "runtime_libraries",
+      "description": "Incremental parsing runtime library.",
+      "topics": [
+        "runtime",
+        "parser",
+        "incremental",
+        "c"
+      ],
+      "expected_license": "MIT",
+      "build_recipe": {
+        "kind": "shared",
+        "sources": [
+          "lib/src/lib.c"
+        ],
+        "include": [
+          "lib/include",
+          "lib/src"
+        ],
+        "auto_include": false,
+        "auxiliary": true
+      }
+    },
+    {
+      "project_id": "sproto_networking",
+      "adapter": "github",
+      "repository": "cloudwu/sproto",
+      "canonical_url": "https://github.com/cloudwu/sproto",
+      "ref": "HEAD",
+      "commit": "e93fd5a0653b2bcab38d3b830958bf2e3a901b5f",
+      "category": "networking",
+      "description": "Sproto serialization and RPC protocol library.",
+      "topics": [
+        "networking",
+        "protocol",
+        "serialization",
+        "c"
+      ],
+      "expected_license": "MIT",
+      "build_recipe": {
+        "kind": "shared",
+        "sources": [
+          "sproto.c"
+        ],
+        "auto_include": false,
+        "auxiliary": true
+      }
+    }
+  ]
+}

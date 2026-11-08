@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "required": ["schema_version", "dataset_id", "summary", "programs", "families"],
+  "properties": {
+    "schema_version": {"type": "string"},
+    "dataset_id": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "summary": {"type": "object"},
+    "programs": {"type": "array", "minItems": 500},
+    "families": {"type": "array", "minItems": 1}
+  },
+  "additionalProperties": true
+}

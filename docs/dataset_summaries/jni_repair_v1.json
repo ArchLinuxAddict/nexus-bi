@@ -1,0 +1,13 @@
+{
+  "general_train": 500,
+  "general_validation": 120,
+  "limitations": [
+    "Corruption is synthetic; real tool errors may differ.",
+    "Targets are recovered facades, not original Java source."
+  ],
+  "root": "artifacts/dataset/jni_repair_v1",
+  "schema_version": "nexus.jni-repair/v1",
+  "train": 5270,
+  "validation": 189,
+  "variants": 3
+}

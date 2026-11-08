@@ -1,0 +1,25 @@
+{
+  "schema_version": "nexus.dataset-registry/v2",
+  "datasets": [
+    {
+      "dataset_id": "realworld-so-v1",
+      "path": "artifacts/dataset/realworld_so",
+      "category": "real_world_system_binary",
+      "classification": "CORE",
+      "capabilities": [
+        "native_binary_understanding",
+        "instruction_semantics",
+        "function_identification",
+        "control_flow_reasoning",
+        "library_analysis"
+      ],
+      "objectives": [
+        "binary_representation_masking",
+        "function_boundary_prediction"
+      ],
+      "license_verified": false,
+      "rationale": "Local real-world shared-object catalog; package license metadata recorded, raw binaries not redistributed.",
+      "license": "Multiple package licenses (per-binary catalog metadata)"
+    }
+  ]
+}

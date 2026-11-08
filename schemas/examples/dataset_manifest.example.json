@@ -1,0 +1,101 @@
+{
+  "schema_version": "0.1.0",
+  "sample_id": "sample_x86_64_gcc16_o2_demo",
+  "project_id": "project_demo",
+  "source_family": "demo_family",
+  "split": "train",
+  "license": {
+    "spdx": "MIT",
+    "redistributable": true,
+    "notes": "Example manifest only."
+  },
+  "provenance": {
+    "repository": null,
+    "commit": null,
+    "source_archive_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+    "source_paths": ["src/demo.c"],
+    "upstream_license_file_sha256": null
+  },
+  "build": {
+    "compiler": "gcc",
+    "compiler_version": "16.2.1",
+    "target": "x86_64-pc-linux-gnu",
+    "arch": "x86_64",
+    "abi": "SysV-AMD64",
+    "optimization": "O2",
+    "flags": ["-O2", "-fPIE", "-pie", "-fno-omit-frame-pointer"],
+    "linker": "GNU ld 2.47",
+    "lto": false,
+    "pie": true,
+    "static": false,
+    "stripped": true,
+    "debug_info": false,
+    "sanitizers": []
+  },
+  "binary": {
+    "sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+    "size": 16384,
+    "format": "ELF",
+    "class": "ELF64",
+    "machine": "x86_64",
+    "endianness": "little"
+  },
+  "artifacts": [
+    {
+      "path": "artifacts/bin/demo",
+      "sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+      "size": 16384,
+      "media_type": "application/x-elf"
+    },
+    {
+      "path": "artifacts/src/demo.c",
+      "sha256": "3333333333333333333333333333333333333333333333333333333333333333",
+      "size": 512,
+      "media_type": "text/x-c"
+    }
+  ],
+  "label_manifests": [
+    {
+      "kind": "functions",
+      "artifact": {
+        "path": "artifacts/labels/functions.parquet",
+        "sha256": "4444444444444444444444444444444444444444444444444444444444444444",
+        "size": 1024,
+        "media_type": "application/vnd.apache.parquet"
+      },
+      "notes": "Function boundaries from DWARF and symbol table."
+    },
+    {
+      "kind": "cfg",
+      "artifact": {
+        "path": "artifacts/labels/cfg.json",
+        "sha256": "5555555555555555555555555555555555555555555555555555555555555555",
+        "size": 2048,
+        "media_type": "application/json"
+      },
+      "notes": "CFG derived from the compiler and verified against disassembly."
+    }
+  ],
+  "tests": [
+    {
+      "test_id": "test_demo_basic",
+      "kind": "unit",
+      "input_sha256": null,
+      "expected_output_sha256": null,
+      "command": "./artifacts/bin/demo --selftest",
+      "timeout_ms": 1000,
+      "status": "passed"
+    }
+  ],
+  "quality": {
+    "label_source": "mixed",
+    "human_reviewed": false,
+    "validation_status": "schema_valid",
+    "confidence": 0.8,
+    "known_gaps": ["Example only; no behavioral verification."]
+  },
+  "lineage": {
+    "parent_sample_id": null,
+    "variant_kind": "stripped"
+  }
+}

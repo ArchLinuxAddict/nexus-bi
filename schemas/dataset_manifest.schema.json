@@ -1,0 +1,440 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://nexus-bi.local/schemas/dataset_manifest.schema.json",
+  "title": "NEXUS-BI Dataset Manifest",
+  "description": "One controlled or real-world sample in the NEXUS-BI dataset factory.",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "sample_id",
+    "project_id",
+    "split",
+    "license",
+    "provenance",
+    "build",
+    "binary",
+    "artifacts",
+    "label_manifests",
+    "quality"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+    },
+    "sample_id": {
+      "type": "string"
+    },
+    "project_id": {
+      "type": "string",
+      "description": "Project-level split unit. Samples from one project never cross train/validation/test."
+    },
+    "source_family": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Used for near-duplicate and family-level leakage checks."
+    },
+    "split": {
+      "type": "string",
+      "enum": [
+        "train",
+        "validation",
+        "test",
+        "benchmark",
+        "heldout"
+      ]
+    },
+    "license": {
+      "type": "object",
+      "required": [
+        "spdx",
+        "redistributable"
+      ],
+      "properties": {
+        "spdx": {
+          "type": "string"
+        },
+        "redistributable": {
+          "type": "boolean"
+        },
+        "notes": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "additionalProperties": true
+    },
+    "provenance": {
+      "type": "object",
+      "required": [
+        "source_archive_sha256"
+      ],
+      "properties": {
+        "repository": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "commit": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "source_archive_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "source_paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "upstream_license_file_sha256": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      },
+      "additionalProperties": true
+    },
+    "build": {
+      "type": "object",
+      "required": [
+        "compiler",
+        "compiler_version",
+        "target",
+        "arch",
+        "abi",
+        "optimization",
+        "flags"
+      ],
+      "properties": {
+        "compiler": {
+          "type": "string",
+          "enum": [
+            "gcc",
+            "clang",
+            "other"
+          ]
+        },
+        "compiler_version": {
+          "type": "string"
+        },
+        "target": {
+          "type": "string"
+        },
+        "arch": {
+          "type": "string"
+        },
+        "abi": {
+          "type": "string"
+        },
+        "optimization": {
+          "type": "string"
+        },
+        "flags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "linker": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "lto": {
+          "type": "boolean"
+        },
+        "pie": {
+          "type": "boolean"
+        },
+        "static": {
+          "type": "boolean"
+        },
+        "stripped": {
+          "type": "boolean"
+        },
+        "debug_info": {
+          "type": "boolean"
+        },
+        "sanitizers": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": true
+    },
+    "binary": {
+      "type": "object",
+      "required": [
+        "sha256",
+        "size",
+        "format",
+        "class",
+        "machine",
+        "endianness"
+      ],
+      "properties": {
+        "sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "size": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "format": {
+          "type": "string",
+          "enum": [
+            "ELF"
+          ]
+        },
+        "class": {
+          "type": "string",
+          "enum": [
+            "ELF32",
+            "ELF64"
+          ]
+        },
+        "machine": {
+          "type": "string"
+        },
+        "endianness": {
+          "type": "string",
+          "enum": [
+            "little",
+            "big"
+          ]
+        }
+      },
+      "additionalProperties": true
+    },
+    "artifacts": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/artifact_ref"
+      }
+    },
+    "label_manifests": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "kind",
+          "artifact"
+        ],
+        "properties": {
+          "kind": {
+            "type": "string",
+            "enum": [
+              "functions",
+              "cfg",
+              "callgraph",
+              "types",
+              "instruction_source_map",
+              "dwarf",
+              "llvm_ir",
+              "assembly",
+              "tests",
+              "sanitizer",
+              "linker_map"
+            ]
+          },
+          "artifact": {
+            "$ref": "#/$defs/artifact_ref"
+          },
+          "notes": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "additionalProperties": true
+      }
+    },
+    "tests": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "test_id",
+          "kind"
+        ],
+        "properties": {
+          "test_id": {
+            "type": "string"
+          },
+          "kind": {
+            "type": "string",
+            "enum": [
+              "unit",
+              "integration",
+              "property",
+              "fuzz",
+              "differential",
+              "sanitizer",
+              "manual"
+            ]
+          },
+          "input_sha256": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "expected_output_sha256": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "command": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "timeout_ms": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "passed",
+              "failed",
+              "skipped",
+              "unknown"
+            ]
+          }
+        },
+        "additionalProperties": true
+      }
+    },
+    "quality": {
+      "type": "object",
+      "required": [
+        "label_source",
+        "human_reviewed",
+        "validation_status"
+      ],
+      "properties": {
+        "label_source": {
+          "type": "string",
+          "enum": [
+            "compiler",
+            "dwarf",
+            "manual",
+            "inferred",
+            "mixed"
+          ]
+        },
+        "human_reviewed": {
+          "type": "boolean"
+        },
+        "validation_status": {
+          "type": "string",
+          "enum": [
+            "unvalidated",
+            "schema_valid",
+            "compile_reproduced",
+            "behavior_verified",
+            "rejected"
+          ]
+        },
+        "confidence": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "known_gaps": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": true
+    },
+    "mission_relevance": {
+      "type": "object",
+      "properties": {
+        "schema_version": {"type": "string"},
+        "category": {"type": "string"},
+        "classification": {"type": "string", "enum": ["CORE", "SUPPORTING", "EXPERIMENTAL", "IRRELEVANT", "PROHIBITED"]},
+        "capabilities": {"type": "array", "items": {"type": "string"}},
+        "objectives": {"type": "array", "items": {"type": "string"}},
+        "rationale": {"type": "string"},
+        "license_required": {"type": "boolean"},
+        "allowed_for_training": {"type": "boolean"}
+      },
+      "required": ["category", "classification", "objectives", "rationale"],
+      "additionalProperties": true
+    },
+    "lineage": {
+      "type": "object",
+      "properties": {
+        "parent_sample_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "variant_kind": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "additionalProperties": true
+    }
+  },
+  "$defs": {
+    "artifact_ref": {
+      "type": "object",
+      "required": [
+        "path",
+        "sha256",
+        "size",
+        "media_type"
+      ],
+      "properties": {
+        "path": {
+          "type": "string"
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "size": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "media_type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": true
+}

@@ -1,0 +1,16 @@
+{
+  "general_train": 500,
+  "general_validation": 120,
+  "holdout_sha": null,
+  "method_train": 174,
+  "method_validation": 8,
+  "protection_train": 3,
+  "protection_validation": 0,
+  "repeat": 10,
+  "root": "artifacts/dataset/jni_method_all",
+  "schema_version": "nexus.jni-method/v1",
+  "semantic_repeat": 2,
+  "semantic_train": 19,
+  "train": 2308,
+  "validation": 128
+}

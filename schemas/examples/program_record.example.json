@@ -1,0 +1,393 @@
+{
+  "schema_version": "0.1.0",
+  "program": {
+    "sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+    "size": 8192,
+    "format": "ELF",
+    "class": "ELF64",
+    "endianness": "little",
+    "machine": "x86_64",
+    "entry_va": "0x1000",
+    "build_id": null,
+    "os_abi": "System V",
+    "abi_version": 0,
+    "stripped": true,
+    "pie": true,
+    "static": false,
+    "shared_object": false,
+    "compiler_hints": [],
+    "file_offset_to_va": [
+      {
+        "file_offset": 4096,
+        "va": "0x1000",
+        "size": 4096
+      }
+    ]
+  },
+  "segments": [
+    {
+      "segment_id": "seg_0001",
+      "type": "PT_LOAD",
+      "flags": ["read", "execute"],
+      "range": {
+        "start_va": "0x1000",
+        "end_va": "0x2000",
+        "file_offset": 4096,
+        "size": 4096
+      },
+      "alignment": 4096,
+      "evidence": ["ev_0001"]
+    }
+  ],
+  "sections": [
+    {
+      "section_id": "sec_0001",
+      "name": ".text",
+      "type": "SHT_PROGBITS",
+      "flags": ["alloc", "exec"],
+      "range": {
+        "start_va": "0x1000",
+        "end_va": "0x2000",
+        "file_offset": 4096,
+        "size": 4096
+      },
+      "alignment": 16,
+      "entry_size": 0,
+      "link": null,
+      "info": null,
+      "evidence": ["ev_0001"]
+    }
+  ],
+  "symbols": [
+    {
+      "symbol_id": "sym_0001",
+      "name": "main",
+      "demangled_name": null,
+      "value": "0x1000",
+      "size": 1,
+      "binding": "GLOBAL",
+      "type": "FUNC",
+      "visibility": "DEFAULT",
+      "section_id": "sec_0001",
+      "version": null,
+      "source": "static",
+      "confidence": 1.0,
+      "evidence": ["ev_0001"]
+    }
+  ],
+  "relocations": [
+    {
+      "relocation_id": "rel_0001",
+      "offset": "0x3000",
+      "type": "R_X86_64_64",
+      "addend": 0,
+      "target": {
+        "name": "puts",
+        "symbol_id": null,
+        "library": "libc.so.6",
+        "version": null,
+        "confidence": 0.9,
+        "evidence": ["ev_0004"]
+      },
+      "resolved_value": null,
+      "confidence": 0.9,
+      "evidence": ["ev_0004"]
+    }
+  ],
+  "imports": [
+    {
+      "name": "puts",
+      "symbol_id": null,
+      "library": "libc.so.6",
+      "version": null,
+      "confidence": 0.9,
+      "evidence": ["ev_0004"]
+    }
+  ],
+  "exports": [],
+  "dependencies": [
+    {
+      "name": "libc.so.6",
+      "kind": "needed",
+      "version": null,
+      "resolved_path": null,
+      "evidence": ["ev_0004"]
+    }
+  ],
+  "regions": [
+    {
+      "region_id": "reg_0001",
+      "kind": "code",
+      "range": {
+        "start_va": "0x1000",
+        "end_va": "0x1001",
+        "file_offset": 4096,
+        "size": 1
+      },
+      "confidence": 1.0,
+      "evidence": ["ev_0001"]
+    }
+  ],
+  "functions": [
+    {
+      "function_id": "fn_0001",
+      "entry_va": "0x1000",
+      "ranges": [
+        {
+          "start_va": "0x1000",
+          "end_va": "0x1001",
+          "file_offset": 4096,
+          "size": 1
+        }
+      ],
+      "names": [
+        {
+          "value": "main",
+          "source": "symbol",
+          "confidence": 1.0,
+          "evidence": ["ev_0001"]
+        }
+      ],
+      "signature": {
+        "return_type": {
+          "name": "int",
+          "kind": "integer",
+          "width": 32,
+          "signed": true,
+          "type_id": "ty_0001",
+          "confidence": 0.4,
+          "evidence": ["ev_0002"]
+        },
+        "parameters": [],
+        "calling_convention": "SysV-AMD64",
+        "variadic": false,
+        "noreturn": false
+      },
+      "blocks": [
+        {
+          "block_id": "bb_0001",
+          "range": {
+            "start_va": "0x1000",
+            "end_va": "0x1001",
+            "file_offset": 4096,
+            "size": 1
+          },
+          "instruction_ids": ["ins_0001"],
+          "successors": [],
+          "predecessors": [],
+          "loop_header": false,
+          "confidence": 1.0,
+          "evidence": ["ev_0001"]
+        }
+      ],
+      "callees": [],
+      "callers": [],
+      "data_references": [],
+      "stack_frame": {
+        "size": null,
+        "alignment": null,
+        "locals": []
+      },
+      "semantic": {
+        "purpose": null,
+        "side_effects": [],
+        "algorithm": null,
+        "confidence": 0.0,
+        "evidence": []
+      },
+      "confidence": 0.5,
+      "evidence": ["ev_0002"],
+      "unknowns": []
+    }
+  ],
+  "instructions": [
+    {
+      "instruction_id": "ins_0001",
+      "va": "0x1000",
+      "file_offset": 4096,
+      "bytes": "55",
+      "length": 1,
+      "arch": "x86_64",
+      "mode": "long",
+      "decoded": true,
+      "mnemonic": "push",
+      "operands": [
+        {
+          "kind": "register",
+          "value": "rbp",
+          "register": "rbp",
+          "width": 64,
+          "access": "read"
+        }
+      ],
+      "reads": ["rbp", "rsp"],
+      "writes": ["rsp"],
+      "memory": [
+        {
+          "kind": "write",
+          "address": "rsp",
+          "width": 8,
+          "base": "rsp",
+          "index": null,
+          "displacement": -8
+        }
+      ],
+      "control_flow": {
+        "kind": "fallthrough",
+        "targets": []
+      },
+      "flags_read": [],
+      "flags_written": [],
+      "decoder": {
+        "name": "llvm-mc",
+        "version": "23.1.4"
+      },
+      "confidence": 1.0,
+      "evidence": ["ev_0001"],
+      "limitations": []
+    }
+  ],
+  "cfg": {
+    "nodes": [
+      {
+        "node_id": "bb_0001",
+        "kind": "basic_block"
+      }
+    ],
+    "edges": [],
+    "confidence": 1.0,
+    "limitations": []
+  },
+  "callgraph": {
+    "nodes": [
+      {
+        "node_id": "fn_0001",
+        "kind": "function"
+      }
+    ],
+    "edges": [],
+    "confidence": 1.0,
+    "limitations": []
+  },
+  "dataflow": {},
+  "types": [
+    {
+      "type_id": "ty_0001",
+      "name": "int",
+      "kind": "integer",
+      "size": 4,
+      "signed": true,
+      "fields": [],
+      "confidence": 0.9,
+      "evidence": ["ev_0002"]
+    }
+  ],
+  "strings": [
+    {
+      "string_id": "str_0001",
+      "va": "0x2000",
+      "file_offset": 8192,
+      "encoding": "utf-8",
+      "value": "hello",
+      "terminated": true,
+      "confidence": 1.0,
+      "evidence": ["ev_0003"],
+      "untrusted": true
+    }
+  ],
+  "metadata": {
+    "elf": {
+      "osabi": "System V",
+      "type": "ET_DYN"
+    }
+  },
+  "analysis": {
+    "analysis_version": "0.1.0",
+    "pipeline": "phase0-example",
+    "started_at": "2026-11-02T00:00:00Z",
+    "finished_at": "2026-11-02T00:00:01Z",
+    "tool_versions": {
+      "llvm-readelf": "23.1.4",
+      "llvm-mc": "23.1.4"
+    },
+    "limitations": [
+      "Example record only; not derived from a real binary."
+    ],
+    "unknowns": []
+  },
+  "evidence": [
+    {
+      "evidence_id": "ev_0001",
+      "kind": "observed",
+      "source": {
+        "type": "elf",
+        "path": "example.bin",
+        "va": "0x1000",
+        "file_offset": 4096,
+        "tool": "llvm-readelf",
+        "version": "23.1.4"
+      },
+      "claim": "The byte at VA 0x1000 is 0x55 and decodes as push rbp.",
+      "payload_sha256": null,
+      "confidence": 1.0,
+      "analysis_version": "0.1.0",
+      "timestamp": "2026-11-02T00:00:00Z",
+      "untrusted": false
+    },
+    {
+      "evidence_id": "ev_0002",
+      "kind": "inferred",
+      "source": {
+        "type": "model",
+        "path": null,
+        "va": "0x1000",
+        "file_offset": 4096,
+        "tool": null,
+        "version": null
+      },
+      "claim": "The function may return a 32-bit integer.",
+      "payload_sha256": null,
+      "confidence": 0.4,
+      "analysis_version": "0.1.0",
+      "timestamp": "2026-11-02T00:00:01Z",
+      "untrusted": false
+    },
+    {
+      "evidence_id": "ev_0003",
+      "kind": "observed",
+      "source": {
+        "type": "tool",
+        "path": "example.bin",
+        "va": "0x2000",
+        "file_offset": 8192,
+        "tool": "string-scan",
+        "version": "0.1.0"
+      },
+      "claim": "A NUL-terminated UTF-8 string 'hello' exists at VA 0x2000.",
+      "payload_sha256": null,
+      "confidence": 1.0,
+      "analysis_version": "0.1.0",
+      "timestamp": "2026-11-02T00:00:01Z",
+      "untrusted": true
+    },
+    {
+      "evidence_id": "ev_0004",
+      "kind": "observed",
+      "source": {
+        "type": "elf",
+        "path": "example.bin",
+        "va": null,
+        "file_offset": null,
+        "tool": "llvm-readelf",
+        "version": "23.1.4"
+      },
+      "claim": "The binary declares a NEEDED dependency on libc.so.6 and a relocation referencing puts.",
+      "payload_sha256": null,
+      "confidence": 0.9,
+      "analysis_version": "0.1.0",
+      "timestamp": "2026-11-02T00:00:01Z",
+      "untrusted": false
+    }
+  ],
+  "unknowns": []
+}

@@ -1,0 +1,1719 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://nexus-bi.local/schemas/program_record.schema.json",
+  "title": "NEXUS-BI ProgramRecord",
+  "description": "Canonical, evidence-linked representation of one analyzed native program.",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "program",
+    "analysis",
+    "evidence"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+    },
+    "program": {
+      "$ref": "#/$defs/program"
+    },
+    "segments": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/segment"
+      }
+    },
+    "sections": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/section"
+      }
+    },
+    "symbols": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/symbol"
+      }
+    },
+    "relocations": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/relocation"
+      }
+    },
+    "imports": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/symbol_ref"
+      }
+    },
+    "exports": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/symbol_ref"
+      }
+    },
+    "dependencies": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/dependency"
+      }
+    },
+    "regions": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/region"
+      }
+    },
+    "functions": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/function"
+      }
+    },
+    "instructions": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/instruction"
+      }
+    },
+    "cfg": {
+      "$ref": "#/$defs/graph"
+    },
+    "callgraph": {
+      "$ref": "#/$defs/graph"
+    },
+    "dataflow": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "types": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/type_record"
+      }
+    },
+    "strings": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/string_record"
+      }
+    },
+    "metadata": {
+      "type": "object",
+      "description": "Format-specific raw metadata. Keep it structured and versioned.",
+      "additionalProperties": true
+    },
+    "analysis": {
+      "$ref": "#/$defs/analysis"
+    },
+    "evidence": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/evidence"
+      }
+    },
+    "unknowns": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/unknown"
+      }
+    }
+  },
+  "$defs": {
+    "address": {
+      "type": "string",
+      "pattern": "^0x[0-9a-fA-F]+$"
+    },
+    "hex_bytes": {
+      "type": "string",
+      "pattern": "^([0-9a-fA-F]{2})+$"
+    },
+    "confidence": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "evidence_refs": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^ev_[A-Za-z0-9_.:-]+$"
+      }
+    },
+    "program": {
+      "type": "object",
+      "required": [
+        "sha256",
+        "size",
+        "format",
+        "class",
+        "endianness",
+        "machine",
+        "entry_va"
+      ],
+      "properties": {
+        "sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "size": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "format": {
+          "type": "string",
+          "enum": [
+            "ELF",
+            "PE",
+            "Mach-O",
+            "raw",
+            "unknown"
+          ]
+        },
+        "class": {
+          "type": "string",
+          "enum": [
+            "ELF32",
+            "ELF64",
+            "PE32",
+            "PE32+",
+            "unknown"
+          ]
+        },
+        "endianness": {
+          "type": "string",
+          "enum": [
+            "little",
+            "big",
+            "unknown"
+          ]
+        },
+        "machine": {
+          "type": "string",
+          "description": "Canonical architecture family, for example x86_64, i386, armv7, thumb2, aarch64, riscv32, riscv64, mips32, powerpc, powerpc64."
+        },
+        "entry_va": {
+          "$ref": "#/$defs/address"
+        },
+        "build_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "os_abi": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "abi_version": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "stripped": {
+          "type": "boolean"
+        },
+        "pie": {
+          "type": "boolean"
+        },
+        "static": {
+          "type": "boolean"
+        },
+        "shared_object": {
+          "type": "boolean"
+        },
+        "compiler_hints": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "file_offset_to_va": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/address_mapping"
+          }
+        }
+      },
+      "additionalProperties": true
+    },
+    "address_mapping": {
+      "type": "object",
+      "required": [
+        "file_offset",
+        "va",
+        "size"
+      ],
+      "properties": {
+        "file_offset": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "va": {
+          "$ref": "#/$defs/address"
+        },
+        "size": {
+          "type": "integer",
+          "minimum": 0
+        }
+      },
+      "additionalProperties": true
+    },
+    "range": {
+      "type": "object",
+      "required": [
+        "start_va",
+        "end_va"
+      ],
+      "properties": {
+        "start_va": {
+          "$ref": "#/$defs/address"
+        },
+        "end_va": {
+          "$ref": "#/$defs/address"
+        },
+        "file_offset": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "size": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        }
+      },
+      "additionalProperties": true
+    },
+    "segment": {
+      "type": "object",
+      "required": [
+        "segment_id",
+        "type",
+        "flags",
+        "range"
+      ],
+      "properties": {
+        "segment_id": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        },
+        "flags": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "read",
+              "write",
+              "execute"
+            ]
+          }
+        },
+        "range": {
+          "$ref": "#/$defs/range"
+        },
+        "alignment": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "evidence": {
+          "$ref": "#/$defs/evidence_refs"
+        }
+      },
+      "additionalProperties": true
+    },
+    "section": {
+      "type": "object",
+      "required": [
+        "section_id",
+        "name",
+        "type",
+        "flags",
+        "range"
+      ],
+      "properties": {
+        "section_id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        },
+        "flags": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "write",
+              "alloc",
+              "exec",
+              "merge",
+              "strings",
+              "info_link",
+              "link_order",
+              "os_nonconforming",
+              "group",
+              "tls",
+              "compressed"
+            ]
+          }
+        },
+        "range": {
+          "$ref": "#/$defs/range"
+        },
+        "alignment": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "entry_size": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "link": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "info": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "evidence": {
+          "$ref": "#/$defs/evidence_refs"
+        }
+      },
+      "additionalProperties": true
+    },
+    "symbol": {
+      "type": "object",
+      "required": [
+        "symbol_id",
+        "name",
+        "value",
+        "size",
+        "binding",
+        "type"
+      ],
+      "properties": {
+        "symbol_id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "demangled_name": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "value": {
+          "$ref": "#/$defs/address"
+        },
+        "size": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "binding": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        },
+        "visibility": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "section_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "version": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "source": {
+          "type": "string",
+          "enum": [
+            "static",
+            "dynamic",
+            "inferred"
+          ]
+        },
+        "confidence": {
+          "$ref": "#/$defs/confidence"
+        },
+        "evidence": {
+          "$ref": "#/$defs/evidence_refs"
+        }
+      },
+      "additionalProperties": true
+    },
+    "symbol_ref": {
+      "type": "object",
+      "required": [
+        "name"
+      ],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "symbol_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "library": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "version": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "confidence": {
+          "$ref": "#/$defs/confidence"
+        },
+        "evidence": {
+          "$ref": "#/$defs/evidence_refs"
+        }
+      },
+      "additionalProperties": true
+    },
+    "relocation": {
+      "type": "object",
+      "required": [
+        "relocation_id",
+        "offset",
+        "type",
+        "target"
+      ],
+      "properties": {
+        "relocation_id": {
+          "type": "string"
+        },
+        "offset": {
+          "$ref": "#/$defs/address"
+        },
+        "type": {
+          "type": "string"
+        },
+        "addend": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "target": {
+          "$ref": "#/$defs/symbol_ref"
+        },
+        "resolved_value": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "confidence": {
+          "$ref": "#/$defs/confidence"
+        },
+        "evidence": {
+          "$ref": "#/$defs/evidence_refs"
+        }
+      },
+      "additionalProperties": true
+    },
+    "dependency": {
+      "type": "object",
+      "required": [
+        "name"
+      ],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "kind": {
+          "type": "string",
+          "enum": [
+            "needed",
+            "soname",
+            "rpath",
+            "runpath",
+            "weak",
+            "unknown"
+          ]
+        },
+        "version": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "resolved_path": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "evidence": {
+          "$ref": "#/$defs/evidence_refs"
+        }
+      },
+      "additionalProperties": true
+    },
+    "region": {
+      "type": "object",
+      "required": [
+        "region_id",
+        "kind",
+        "range",
+        "confidence"
+      ],
+      "properties": {
+        "region_id": {
+          "type": "string"
+        },
+        "kind": {
+          "type": "string",
+          "enum": [
+            "code",
+            "data",
+            "rodata",
+            "bss",
+            "stack",
+            "heap",
+            "literal_pool",
+            "jump_table",
+            "padding",
+            "unknown"
+          ]
+        },
+        "range": {
+          "$ref": "#/$defs/range"
+        },
+        "confidence": {
+          "$ref": "#/$defs/confidence"
+        },
+        "evidence": {
+          "$ref": "#/$defs/evidence_refs"
+        }
+      },
+      "additionalProperties": true
+    },
+    "operand": {
+      "type": "object",
+      "required": [
+        "kind"
+      ],
+      "properties": {
+        "kind": {
+          "type": "string",
+          "enum": [
+            "register",
+            "immediate",
+            "memory",
+            "address",
+            "condition",
+            "list",
+            "unknown"
+          ]
+        },
+        "value": {
+          "type": [
+            "string",
+            "integer",
+            "null"
+          ]
+        },
+        "register": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "width": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "access": {
+          "type": "string",
+          "enum": [
+            "read",
+            "write",
+            "read_write",
+            "unknown"
+          ]
+        },
+        "memory": {
+          "$ref": "#/$defs/memory_operand"
+        }
+      },
+      "additionalProperties": true
+    },
+    "memory_operand": {
+      "type": "object",
+      "properties": {
+        "base": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "index": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "scale": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "displacement": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "segment": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "width": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        }
+      },
+      "additionalProperties": true
+    },
+    "memory_effect": {
+      "type": "object",
+      "required": [
+        "kind"
+      ],
+      "properties": {
+        "kind": {
+          "type": "string",
+          "enum": [
+            "read",
+            "write",
+            "read_write",
+            "none",
+            "unknown"
+          ]
+        },
+        "address": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "width": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "base": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "index": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "displacement": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        }
+      },
+      "additionalProperties": true
+    },
+    "control_flow": {
+      "type": "object",
+      "required": [
+        "kind"
+      ],
+      "properties": {
+        "kind": {
+          "type": "string",
+          "enum": [
+            "fallthrough",
+            "conditional_branch",
+            "unconditional_branch",
+            "call",
+            "return",
+            "indirect_branch",
+            "indirect_call",
+            "trap",
+            "unknown"
+          ]
+        },
+        "targets": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "va": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "kind": {
+                "type": "string"
+              },
+              "confidence": {
+                "$ref": "#/$defs/confidence"
+              }
+            },
+            "additionalProperties": true
+          }
+        }
+      },
+      "additionalProperties": true
+    },
+    "instruction": {
+      "type": "object",
+      "required": [
+        "instruction_id",
+        "va",
+        "file_offset",
+        "bytes",
+        "length",
+        "arch",
+        "mode",
+        "decoded",
+        "confidence",
+        "evidence"
+      ],
+      "properties": {
+        "instruction_id": {
+          "type": "string"
+        },
+        "va": {
+          "$ref": "#/$defs/address"
+        },
+        "file_offset": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "bytes": {
+          "$ref": "#/$defs/hex_bytes"
+        },
+        "length": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "arch": {
+          "type": "string"
+        },
+        "mode": {
+          "type": "string"
+        },
+        "decoded": {
+          "type": "boolean"
+        },
+        "mnemonic": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "operands": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/operand"
+          }
+        },
+        "reads": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "writes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "memory": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/memory_effect"
+          }
+        },
+        "control_flow": {
+          "$ref": "#/$defs/control_flow"
+        },
+        "flags_read": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "flags_written": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "decoder": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "version": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          },
+          "additionalProperties": true
+        },
+        "confidence": {
+          "$ref": "#/$defs/confidence"
+        },
+        "evidence": {
+          "$ref": "#/$defs/evidence_refs"
+        },
+        "limitations": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": true
+    },
+    "basic_block": {
+      "type": "object",
+      "required": [
+        "block_id",
+        "range",
+        "instruction_ids"
+      ],
+      "properties": {
+        "block_id": {
+          "type": "string"
+        },
+        "range": {
+          "$ref": "#/$defs/range"
+        },
+        "instruction_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1
+        },
+        "successors": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "predecessors": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "loop_header": {
+          "type": "boolean"
+        },
+        "confidence": {
+          "$ref": "#/$defs/confidence"
+        },
+        "evidence": {
+          "$ref": "#/$defs/evidence_refs"
+        }
+      },
+      "additionalProperties": true
+    },
+    "parameter": {
+      "type": "object",
+      "required": [
+        "index",
+        "name",
+        "type",
+        "confidence"
+      ],
+      "properties": {
+        "index": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "name": {
+          "type": "string"
+        },
+        "type": {
+          "$ref": "#/$defs/type_ref"
+        },
+        "location": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "confidence": {
+          "$ref": "#/$defs/confidence"
+        },
+        "evidence": {
+          "$ref": "#/$defs/evidence_refs"
+        }
+      },
+      "additionalProperties": true
+    },
+    "type_ref": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "kind": {
+          "type": "string",
+          "enum": [
+            "void",
+            "integer",
+            "float",
+            "pointer",
+            "array",
+            "struct",
+            "union",
+            "enum",
+            "function_pointer",
+            "opaque",
+            "unknown"
+          ]
+        },
+        "width": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "signed": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "type_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "confidence": {
+          "$ref": "#/$defs/confidence"
+        },
+        "evidence": {
+          "$ref": "#/$defs/evidence_refs"
+        }
+      },
+      "additionalProperties": true
+    },
+    "function": {
+      "type": "object",
+      "required": [
+        "function_id",
+        "entry_va",
+        "ranges",
+        "signature",
+        "blocks",
+        "confidence",
+        "evidence",
+        "unknowns"
+      ],
+      "properties": {
+        "function_id": {
+          "type": "string"
+        },
+        "entry_va": {
+          "$ref": "#/$defs/address"
+        },
+        "ranges": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/range"
+          },
+          "minItems": 1
+        },
+        "names": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "value": {
+                "type": "string"
+              },
+              "source": {
+                "type": "string",
+                "enum": [
+                  "symbol",
+                  "debug",
+                  "inferred",
+                  "external"
+                ]
+              },
+              "confidence": {
+                "$ref": "#/$defs/confidence"
+              },
+              "evidence": {
+                "$ref": "#/$defs/evidence_refs"
+              }
+            },
+            "additionalProperties": true
+          }
+        },
+        "signature": {
+          "type": "object",
+          "properties": {
+            "return_type": {
+              "$ref": "#/$defs/type_ref"
+            },
+            "parameters": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/parameter"
+              }
+            },
+            "calling_convention": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "variadic": {
+              "type": [
+                "boolean",
+                "null"
+              ]
+            },
+            "noreturn": {
+              "type": [
+                "boolean",
+                "null"
+              ]
+            }
+          },
+          "additionalProperties": true
+        },
+        "blocks": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/basic_block"
+          },
+          "minItems": 1
+        },
+        "callees": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "function_id": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "symbol": {
+                "$ref": "#/$defs/symbol_ref"
+              },
+              "call_site_va": {
+                "$ref": "#/$defs/address"
+              },
+              "kind": {
+                "type": "string",
+                "enum": [
+                  "direct",
+                  "indirect",
+                  "tail",
+                  "external",
+                  "unknown"
+                ]
+              },
+              "confidence": {
+                "$ref": "#/$defs/confidence"
+              },
+              "evidence": {
+                "$ref": "#/$defs/evidence_refs"
+              }
+            },
+            "additionalProperties": true
+          }
+        },
+        "callers": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "data_references": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "va": {
+                "$ref": "#/$defs/address"
+              },
+              "width": {
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              },
+              "access": {
+                "type": "string",
+                "enum": [
+                  "read",
+                  "write",
+                  "read_write",
+                  "unknown"
+                ]
+              },
+              "target_kind": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "evidence": {
+                "$ref": "#/$defs/evidence_refs"
+              }
+            },
+            "additionalProperties": true
+          }
+        },
+        "stack_frame": {
+          "type": "object",
+          "properties": {
+            "size": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
+            "alignment": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
+            "locals": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": true
+              }
+            }
+          },
+          "additionalProperties": true
+        },
+        "semantic": {
+          "type": "object",
+          "properties": {
+            "purpose": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "side_effects": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "algorithm": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "confidence": {
+              "$ref": "#/$defs/confidence"
+            },
+            "evidence": {
+              "$ref": "#/$defs/evidence_refs"
+            }
+          },
+          "additionalProperties": true
+        },
+        "confidence": {
+          "$ref": "#/$defs/confidence"
+        },
+        "evidence": {
+          "$ref": "#/$defs/evidence_refs"
+        },
+        "unknowns": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/unknown"
+          }
+        }
+      },
+      "additionalProperties": true
+    },
+    "edge": {
+      "type": "object",
+      "required": [
+        "edge_id",
+        "source",
+        "target",
+        "kind",
+        "confidence"
+      ],
+      "properties": {
+        "edge_id": {
+          "type": "string"
+        },
+        "source": {
+          "type": "string"
+        },
+        "target": {
+          "type": "string"
+        },
+        "kind": {
+          "type": "string",
+          "enum": [
+            "cfg_fallthrough",
+            "cfg_conditional",
+            "cfg_unconditional",
+            "cfg_indirect",
+            "cfg_exception",
+            "call_direct",
+            "call_indirect",
+            "call_tail",
+            "data_dependence",
+            "points_to",
+            "parameter_flow",
+            "return_flow",
+            "unknown"
+          ]
+        },
+        "attributes": {
+          "type": "object",
+          "additionalProperties": true
+        },
+        "confidence": {
+          "$ref": "#/$defs/confidence"
+        },
+        "evidence": {
+          "$ref": "#/$defs/evidence_refs"
+        }
+      },
+      "additionalProperties": true
+    },
+    "graph": {
+      "type": "object",
+      "properties": {
+        "nodes": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        },
+        "edges": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/edge"
+          }
+        },
+        "confidence": {
+          "$ref": "#/$defs/confidence"
+        },
+        "limitations": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": true
+    },
+    "type_record": {
+      "type": "object",
+      "required": [
+        "type_id",
+        "kind",
+        "confidence",
+        "evidence"
+      ],
+      "properties": {
+        "type_id": {
+          "type": "string"
+        },
+        "name": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "kind": {
+          "type": "string",
+          "enum": [
+            "integer",
+            "float",
+            "pointer",
+            "array",
+            "struct",
+            "union",
+            "enum",
+            "function_pointer",
+            "opaque",
+            "unknown"
+          ]
+        },
+        "size": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "signed": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "fields": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "offset": {
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              },
+              "size": {
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              },
+              "type": {
+                "$ref": "#/$defs/type_ref"
+              },
+              "confidence": {
+                "$ref": "#/$defs/confidence"
+              },
+              "evidence": {
+                "$ref": "#/$defs/evidence_refs"
+              }
+            },
+            "additionalProperties": true
+          }
+        },
+        "confidence": {
+          "$ref": "#/$defs/confidence"
+        },
+        "evidence": {
+          "$ref": "#/$defs/evidence_refs"
+        }
+      },
+      "additionalProperties": true
+    },
+    "string_record": {
+      "type": "object",
+      "required": [
+        "string_id",
+        "va",
+        "encoding",
+        "value",
+        "confidence"
+      ],
+      "properties": {
+        "string_id": {
+          "type": "string"
+        },
+        "va": {
+          "$ref": "#/$defs/address"
+        },
+        "file_offset": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "encoding": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string"
+        },
+        "terminated": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "confidence": {
+          "$ref": "#/$defs/confidence"
+        },
+        "evidence": {
+          "$ref": "#/$defs/evidence_refs"
+        },
+        "untrusted": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": true
+    },
+    "unknown": {
+      "type": "object",
+      "required": [
+        "unknown_id",
+        "question",
+        "severity",
+        "status"
+      ],
+      "properties": {
+        "unknown_id": {
+          "type": "string"
+        },
+        "question": {
+          "type": "string"
+        },
+        "severity": {
+          "type": "string",
+          "enum": [
+            "low",
+            "medium",
+            "high",
+            "critical"
+          ]
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "open",
+            "investigating",
+            "blocked",
+            "resolved"
+          ]
+        },
+        "required_evidence": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "next_probe": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "additionalProperties": true
+    },
+    "evidence": {
+      "type": "object",
+      "required": [
+        "evidence_id",
+        "kind",
+        "claim",
+        "confidence"
+      ],
+      "properties": {
+        "evidence_id": {
+          "type": "string",
+          "pattern": "^ev_[A-Za-z0-9_.:-]+$"
+        },
+        "kind": {
+          "type": "string",
+          "enum": [
+            "observed",
+            "derived",
+            "inferred",
+            "verified",
+            "human"
+          ]
+        },
+        "source": {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "enum": [
+                "elf",
+                "disassembly",
+                "tool",
+                "test",
+                "human",
+                "model"
+              ]
+            },
+            "path": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "va": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "file_offset": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
+            "tool": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "version": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          },
+          "additionalProperties": true
+        },
+        "claim": {
+          "type": "string"
+        },
+        "payload_sha256": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "confidence": {
+          "$ref": "#/$defs/confidence"
+        },
+        "analysis_version": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "timestamp": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "untrusted": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": true
+    },
+    "analysis": {
+      "type": "object",
+      "required": [
+        "analysis_version",
+        "pipeline"
+      ],
+      "properties": {
+        "analysis_version": {
+          "type": "string"
+        },
+        "pipeline": {
+          "type": "string"
+        },
+        "started_at": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "finished_at": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "tool_versions": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "limitations": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "unknowns": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/unknown"
+          }
+        }
+      },
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": true
+}

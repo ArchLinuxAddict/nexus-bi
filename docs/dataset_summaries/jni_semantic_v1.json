@@ -1,0 +1,29 @@
+{
+  "binaries": 1,
+  "limitations": [
+    "Targets are JNI semantic reconstructions, not original Java source.",
+    "Control flow and unknown return types in targets are approximated.",
+    "No behavioral equivalence is claimed."
+  ],
+  "root": "artifacts/dataset/jni_semantic_v1",
+  "samples": 19,
+  "schema_version": "nexus.jni-semantic/v1",
+  "splits": {
+    "test": 0,
+    "train": 19,
+    "validation": 0
+  },
+  "templates": {
+    "empty_native": 3,
+    "field_access": 3,
+    "hidden_guard": 3,
+    "installed_list_filter": 2,
+    "key_dispatch": 2,
+    "lifecycle_on_create": 1,
+    "lifecycle_on_save": 1,
+    "reflection_field": 1,
+    "reflection_invoke": 1,
+    "string_contains": 1,
+    "super_dispatch": 1
+  }
+}

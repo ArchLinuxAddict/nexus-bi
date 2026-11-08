@@ -1,0 +1,27 @@
+{
+  "capabilities": {
+    "dynamic-class-loading": 1,
+    "xz-decompression": 1
+  },
+  "classes": 28,
+  "limitations": [
+    "Targets are JNI facades, not original Java source.",
+    "Stack-built RegisterNatives tables require Ghidra evidence and are not included by this lightweight builder.",
+    "Runtime-decrypted payloads are not visible statically."
+  ],
+  "methods": 186,
+  "protections": {
+    "none": 27,
+    "runtime-decryption": 1
+  },
+  "root": "artifacts/dataset/jni_facade_v1",
+  "rows": 28,
+  "schema_version": "nexus.jni-facade/v1",
+  "sources": {
+    "jni_table": 28
+  },
+  "splits": {
+    "train": 27,
+    "validation": 1
+  }
+}

@@ -1,0 +1,325 @@
+{
+  "schema_version": "0.1.0",
+  "capabilities": {
+    "native_binary_understanding": "Understand raw bytes, executable structure and architecture-specific artifacts.",
+    "instruction_semantics": "Interpret instructions, operands, registers, memory effects and control flow.",
+    "function_identification": "Recover function boundaries, signatures and relationships.",
+    "control_flow_reasoning": "Recover and reason over basic blocks, CFG and call graph.",
+    "dataflow_type_inference": "Infer data dependencies, registers, stack values and types.",
+    "cross_compiler_matching": "Match equivalent functions across compilers.",
+    "cross_optimization_matching": "Match equivalent functions across optimization levels.",
+    "source_binary_alignment": "Align source files/functions with binary functions and addresses.",
+    "c_reconstruction": "Reconstruct verified C functions, modules and projects.",
+    "cpp_reconstruction": "Reconstruct C++ semantics and structure where evidence supports it.",
+    "java_jni_reconstruction": "Reconstruct Java/JNI relationships and source.",
+    "library_analysis": "Analyze native libraries, dependencies and external interfaces.",
+    "behavior_inference": "Infer function purpose, side effects and program behavior.",
+    "security_investigation": "Investigate security-relevant behavior with evidence.",
+    "autonomous_reverse_engineering": "Plan and execute evidence-driven investigations.",
+    "project_reconstruction": "Reconstruct and verify complete projects.",
+    "evidence_verification": "Compile, test and verify conclusions with traceable evidence."
+  },
+  "objectives": {
+    "binary_representation_masking": {
+      "capabilities": [
+        "native_binary_understanding",
+        "instruction_semantics"
+      ],
+      "benchmark": "masked_instruction",
+      "modalities": [
+        "instructions",
+        "bytes",
+        "metadata"
+      ],
+      "label_provenance": "self-supervised input tokens",
+      "status": "pilot"
+    },
+    "function_boundary_prediction": {
+      "capabilities": [
+        "function_identification",
+        "control_flow_reasoning"
+      ],
+      "benchmark": "function_boundary",
+      "label_provenance": "debug symbol table",
+      "status": "pilot"
+    },
+    "cross_compiler_function_retrieval": {
+      "capabilities": [
+        "cross_compiler_matching",
+        "function_identification"
+      ],
+      "benchmark": "function_retrieval",
+      "label_provenance": "shared symbol names across builds",
+      "status": "pilot"
+    },
+    "source_binary_alignment": {
+      "capabilities": [
+        "source_binary_alignment",
+        "c_reconstruction"
+      ],
+      "benchmark": "pending_alignment_task",
+      "label_provenance": "DWARF/source mapping",
+      "status": "planned"
+    },
+    "c_reconstruction": {
+      "capabilities": [
+        "c_reconstruction",
+        "evidence_verification"
+      ],
+      "benchmark": "reconstruction",
+      "label_provenance": "source/binary pairs and tests",
+      "status": "experimental"
+    },
+    "java_jni_reconstruction": {
+      "capabilities": [
+        "java_jni_reconstruction",
+        "library_analysis"
+      ],
+      "benchmark": "jni_reconstruction",
+      "label_provenance": "JNI fixtures",
+      "status": "experimental"
+    },
+    "security_analysis": {
+      "capabilities": [
+        "security_investigation",
+        "dataflow_type_inference"
+      ],
+      "benchmark": "security_findings",
+      "label_provenance": "heuristic evidence; not confirmed",
+      "status": "experimental"
+    },
+    "investigation_planning": {
+      "capabilities": [
+        "autonomous_reverse_engineering",
+        "evidence_verification"
+      ],
+      "benchmark": "investigation",
+      "label_provenance": "verified tool actions",
+      "status": "planned"
+    },
+    "infrastructure_smoke": {
+      "capabilities": [
+        "native_binary_understanding"
+      ],
+      "benchmark": "infrastructure_only",
+      "label_provenance": "synthetic tensors",
+      "status": "infrastructure_only"
+    },
+    "cross_optimization_function_matching": {
+      "capabilities": [
+        "cross_optimization_matching",
+        "function_identification"
+      ],
+      "benchmark": "function_retrieval_cross_optimization",
+      "modalities": [
+        "instructions",
+        "cfg",
+        "metadata"
+      ],
+      "label_provenance": "DWARF/symbol function identity shared across optimization builds",
+      "status": "pilot"
+    },
+    "basic_block_correspondence": {
+      "capabilities": [
+        "control_flow_reasoning",
+        "source_binary_alignment"
+      ],
+      "benchmark": "basic_block_correspondence",
+      "modalities": [
+        "blocks",
+        "source-lines"
+      ],
+      "label_provenance": "CFG block and DWARF line-table intersection; heuristic",
+      "status": "experimental"
+    },
+    "instruction_semantics": {
+      "capabilities": [
+        "instruction_semantics"
+      ],
+      "benchmark": "masked_instruction",
+      "modalities": [
+        "instructions",
+        "tokens"
+      ],
+      "label_provenance": "self-supervised input tokens; semantic labels unavailable",
+      "status": "experimental"
+    },
+    "compiler_transformation_analysis": {
+      "capabilities": [
+        "instruction_semantics",
+        "control_flow_reasoning",
+        "cross_optimization_matching"
+      ],
+      "benchmark": "transformation_descriptor",
+      "modalities": [
+        "instructions",
+        "cfg",
+        "metadata"
+      ],
+      "label_provenance": "aligned binary differential",
+      "status": "experimental"
+    },
+    "type_dataflow_inference": {
+      "capabilities": [
+        "dataflow_type_inference"
+      ],
+      "benchmark": "type_inference",
+      "modalities": [
+        "types",
+        "locations",
+        "metadata"
+      ],
+      "label_provenance": "DWARF type DIEs and simple location expressions",
+      "status": "experimental"
+    },
+    "function_purpose_inference": {
+      "capabilities": [
+        "behavior_inference"
+      ],
+      "benchmark": "purpose_inference",
+      "modalities": [
+        "instructions",
+        "cfg",
+        "callgraph"
+      ],
+      "label_provenance": "none verified; task remains unavailable",
+      "status": "planned"
+    }
+  },
+  "dataset_categories": {
+    "controlled_binary_source": {
+      "classification": "CORE",
+      "capabilities": [
+        "native_binary_understanding",
+        "instruction_semantics",
+        "function_identification",
+        "control_flow_reasoning",
+        "c_reconstruction",
+        "source_binary_alignment"
+      ],
+      "rationale": "Source and binary are both available from controlled builds with compiler metadata.",
+      "allowed_for_training": true,
+      "license_required": true
+    },
+    "real_world_binary_source": {
+      "classification": "CORE",
+      "capabilities": [
+        "native_binary_understanding",
+        "function_identification",
+        "control_flow_reasoning",
+        "cross_compiler_matching",
+        "library_analysis",
+        "security_investigation"
+      ],
+      "rationale": "Real projects with licensed source, exact commits and controlled binaries.",
+      "allowed_for_training": true,
+      "license_required": true
+    },
+    "jni_fixtures": {
+      "classification": "CORE",
+      "capabilities": [
+        "java_jni_reconstruction",
+        "library_analysis"
+      ],
+      "rationale": "Java/native boundary examples with actual JNI artifacts.",
+      "allowed_for_training": true,
+      "license_required": true
+    },
+    "technical_documentation": {
+      "classification": "SUPPORTING",
+      "capabilities": [
+        "instruction_semantics",
+        "library_analysis",
+        "java_jni_reconstruction"
+      ],
+      "rationale": "ABI, architecture and runtime documentation supplies context, not binary examples.",
+      "allowed_for_training": true,
+      "license_required": true
+    },
+    "source_only_supporting": {
+      "classification": "SUPPORTING",
+      "capabilities": [
+        "c_reconstruction",
+        "cpp_reconstruction",
+        "java_jni_reconstruction"
+      ],
+      "rationale": "Language/runtime semantics may help reconstruction, but source without binaries is not core binary intelligence.",
+      "allowed_for_training": true,
+      "license_required": true
+    },
+    "synthetic_infrastructure_smoke": {
+      "classification": "EXPERIMENTAL",
+      "capabilities": [
+        "native_binary_understanding"
+      ],
+      "rationale": "Infrastructure tests only; not a capability benchmark.",
+      "allowed_for_training": true,
+      "license_required": false
+    },
+    "generic_internet_text": {
+      "classification": "PROHIBITED",
+      "capabilities": [],
+      "rationale": "No demonstrated binary-intelligence benefit; promotes generic-model drift.",
+      "allowed_for_training": false,
+      "license_required": true
+    },
+    "irrelevant_generic": {
+      "classification": "IRRELEVANT",
+      "capabilities": [],
+      "rationale": "No demonstrated relationship to binary intelligence.",
+      "allowed_for_training": false,
+      "license_required": true
+    },
+    "unclassified": {
+      "classification": "PROHIBITED",
+      "capabilities": [],
+      "rationale": "Unclassified data cannot enter training.",
+      "allowed_for_training": false,
+      "license_required": true
+    },
+    "real_world_aligned_source": {
+      "classification": "CORE",
+      "capabilities": [
+        "native_binary_understanding",
+        "instruction_semantics",
+        "function_identification",
+        "control_flow_reasoning",
+        "cross_compiler_matching",
+        "cross_optimization_matching",
+        "source_binary_alignment",
+        "dataflow_type_inference",
+        "c_reconstruction",
+        "library_analysis"
+      ],
+      "rationale": "Licensed real-world projects with exact commits, controlled multi-compiler builds, DWARF/symbol alignment evidence and explicit task eligibility.",
+      "allowed_for_training": true,
+      "license_required": true
+    },
+    "real_world_system_binary": {
+      "classification": "CORE",
+      "capabilities": [
+        "native_binary_understanding",
+        "instruction_semantics",
+        "function_identification",
+        "control_flow_reasoning",
+        "library_analysis",
+        "security_investigation"
+      ],
+      "rationale": "Local real-world system and wheel shared objects. Package license metadata is recorded, but raw binaries are not redistributed and legal compatibility is not independently verified.",
+      "allowed_for_training": true,
+      "license_required": false
+    }
+  },
+  "training_rules": {
+    "require_objectives": true,
+    "require_dataset_categories": true,
+    "require_core_objective": true,
+    "require_core_dataset_for_main": true,
+    "prohibited_classifications": [
+      "IRRELEVANT",
+      "PROHIBITED"
+    ],
+    "experimental_requires_justification_for_main": true,
+    "reject_unregistered_datasets": true
+  }
+}

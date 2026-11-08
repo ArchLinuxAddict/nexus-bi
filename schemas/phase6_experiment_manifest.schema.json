@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "required": ["schema_version", "phase", "checkpoint", "dataset", "seeds", "training_scope"],
+  "properties": {
+    "schema_version": {"type": "string"},
+    "phase": {"const": "phase6"},
+    "checkpoint": {"type": "object", "required": ["sha256", "preserved", "random_initialization", "pretrained_weights_loaded"]},
+    "dataset": {"type": "object", "required": ["dataset_id", "category", "classification", "license"]},
+    "seeds": {"type": "object"},
+    "training_scope": {"type": "string"}
+  },
+  "additionalProperties": true
+}

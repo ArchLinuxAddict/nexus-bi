@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "required": ["schema_version", "overall_status", "central_question", "answer", "criteria", "negative_results"],
+  "properties": {
+    "schema_version": {"type": "string"},
+    "overall_status": {"enum": ["PASS", "PARTIAL", "FAIL", "UNVERIFIED", "BLOCKED"]},
+    "central_question": {"type": "string", "minLength": 1},
+    "answer": {"type": "string", "minLength": 1},
+    "criteria": {"type": "object", "additionalProperties": {"type": "string"}},
+    "negative_results": {"type": "array", "items": {"type": "string"}},
+    "limitations": {"type": "array", "items": {"type": "string"}}
+  },
+  "additionalProperties": true
+}

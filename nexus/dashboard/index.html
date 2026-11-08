@@ -1,0 +1,207 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>NEXUS-BI</title>
+  <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <div>
+      <h1>NEXUS-BI</h1>
+      <p class="subtitle">Binary intelligence platform · local build</p>
+    </div>
+    <div class="statusline">
+      <span id="health" class="badge">checking</span>
+      <span id="version" class="muted"></span>
+      <input id="api-key" type="password" placeholder="API key (optional)" autocomplete="off">
+    </div>
+  </header>
+  <nav class="tabs">
+    <button data-view="overview" class="active">Overview</button>
+    <button data-view="binaries">Binaries</button>
+    <button data-view="java">Java/APK</button>
+    <button data-view="tools">Tools</button>
+    <button data-view="analysis">Analysis</button>
+    <button data-view="reconstruction">Reconstruction</button>
+    <button data-view="security">Security</button>
+    <button data-view="datasets">Datasets</button>
+    <button data-view="model">Model</button>
+    <button data-view="residual">Residual</button>
+    <button data-view="foundation">Foundation</button>
+  </nav>
+  <main>
+    <section id="view-overview" class="view active">
+      <h2>System overview</h2>
+      <div class="grid two">
+        <article class="card"><h3>Capabilities</h3><div id="capabilities" class="scroll"></div></article>
+        <article class="card"><h3>Hardware</h3><div id="hardware" class="scroll"></div></article>
+      </div>
+      <article class="card">
+        <h3>Recent binaries</h3>
+        <div id="overview-binaries" class="scroll"></div>
+      </article>
+    </section>
+
+    <section id="view-binaries" class="view">
+      <h2>Binaries</h2>
+      <article class="card">
+        <form id="upload-form">
+          <input id="binary-file" type="file" required>
+          <button type="submit">Upload</button>
+          <span id="upload-status" class="muted"></span>
+        </form>
+      </article>
+      <article class="card">
+        <h3>Stored binaries</h3>
+        <div id="binary-list" class="scroll"></div>
+      </article>
+    </section>
+
+    <section id="view-analysis" class="view">
+      <h2>Analysis</h2>
+      <div id="analysis-empty" class="card empty">Upload and analyze a binary to inspect functions, CFG and evidence.</div>
+      <div id="analysis-content" class="hidden">
+        <article class="card"><h3>Summary</h3><div id="analysis-summary"></div></article>
+        <article class="card">
+          <h3>Foundation model predictions</h3>
+          <label>Checkpoint <select id="model-checkpoint"></select></label>
+          <button id="run-model-analysis">Run model</button>
+          <span id="model-status" class="muted"></span>
+          <div id="model-functions" class="scroll"></div>
+          <pre id="model-raw" class="code scroll hidden"></pre>
+        </article>
+        <article class="card"><h3>Functions</h3><div id="function-list" class="scroll"></div></article>
+        <article class="card">
+          <h3>Selected function</h3>
+          <div id="function-detail" class="empty">Select a function.</div>
+          <div id="cfg-view"></div>
+          <h3>Data-flow candidates</h3>
+          <div id="dataflow" class="scroll"></div>
+        </article>
+        <div class="grid two">
+          <article class="card"><h3>Disassembly</h3><div id="disassembly" class="scroll code"></div></article>
+          <article class="card"><h3>Call graph</h3><div id="callgraph" class="scroll"></div></article>
+        </div>
+      </div>
+    </section>
+
+    <section id="view-reconstruction" class="view">
+      <h2>Reconstruction</h2>
+      <div id="reconstruction-empty" class="card empty">Run an analysis first.</div>
+      <div id="reconstruction-content" class="hidden">
+        <article class="card">
+          <h3>Generate</h3>
+          <button id="reconstruct-c">C reconstruction</button>
+          <button id="reconstruct-java">Java / JNI reconstruction</button>
+          <button id="reconstruct-model-c">Model C reconstruction</button>
+          <span id="reconstruction-status" class="muted"></span>
+          <p class="muted">C uses Ghidra. Java uses JADX/CFR on JAR/APK/DEX artifacts; for a native library it recovers the Java classes, methods, fields and calls from the JNI call sequence, including methods registered through JNI_OnLoad/RegisterNatives. That is semantic or facade recovery, not original source.</p>
+          <pre id="model-reconstruction" class="code scroll"></pre>
+        </article>
+        <article class="card">
+          <h3>Generated files</h3>
+          <select id="source-file-select"></select>
+          <pre id="source-view" class="code scroll"></pre>
+          <div id="evidence-map" class="scroll"></div>
+          <button id="verify-reconstruction">Compile / verify</button>
+          <div id="verification-result"></div>
+        </article>
+      </div>
+    </section>
+
+    <section id="view-security" class="view">
+      <h2>Security findings</h2>
+      <div id="security-empty" class="card empty">Run an analysis to see evidence-linked findings.</div>
+      <div id="security-list"></div>
+    </section>
+
+    <section id="view-java" class="view">
+      <h2>Java / APK</h2>
+      <article class="card">
+        <form id="java-upload-form">
+          <input id="java-file" type="file" accept=".jar,.apk,.dex,.class,.zip" required>
+          <button type="submit">Upload Java artifact</button>
+          <span id="java-upload-status" class="muted"></span>
+        </form>
+      </article>
+      <article class="card"><h3>Artifact summary</h3><div id="java-summary" class="empty">Upload a JAR, APK, DEX or class file.</div></article>
+      <article class="card">
+        <h3>Decompile with JADX / CFR</h3>
+        <label>Project name <input id="java-project-name" value="nexus_java_reconstruction"></label>
+        <label><input id="java-verify" type="checkbox" checked> Compile verification</label>
+        <button id="java-reconstruct">Decompile</button>
+        <span id="java-reconstruction-status" class="muted"></span>
+        <select id="java-file-select" class="hidden"></select>
+        <pre id="java-source" class="code scroll"></pre>
+        <pre id="java-evidence" class="code scroll"></pre>
+      </article>
+    </section>
+
+    <section id="view-tools" class="view">
+      <h2>External tools</h2>
+      <article class="card"><div id="tool-matrix" class="scroll"></div></article>
+    </section>
+
+    <section id="view-datasets" class="view">
+      <h2>Datasets</h2>
+      <div id="dataset-list" class="card empty">No datasets registered.</div>
+    </section>
+
+    <section id="view-model" class="view">
+      <h2>Model and experiments</h2>
+      <article class="card">
+        <h3>Model status</h3>
+        <div id="model-status"></div>
+        <button id="run-smoke">Run CPU smoke test</button>
+        <pre id="smoke-result" class="code scroll"></pre>
+      </article>
+      <article class="card"><h3>Experiments</h3><div id="experiment-list" class="scroll"></div></article>
+    </section>
+
+    <section id="view-residual" class="view">
+      <h2>Residual model</h2>
+      <p class="muted">Experimental repair/ranking layer. Generated text is not exact code synthesis and is not compile- or behavior-verified; JADX/CFR/Ghidra output remains authoritative.</p>
+      <article class="card"><h3>Checkpoint</h3><div id="residual-status" class="scroll"></div></article>
+      <article class="card">
+        <h3>Held-out evaluation</h3>
+        <button id="residual-evaluate">Evaluate checkpoint</button>
+        <span id="residual-evaluate-status" class="muted"></span>
+        <div id="residual-metrics" class="scroll"></div>
+      </article>
+      <article class="card">
+        <h3>Try a tool-output sample</h3>
+        <label>Language <select id="residual-language"><option value="java">Java</option><option value="jni">JNI</option><option value="c">C</option></select></label>
+        <label>Tool <select id="residual-tool"><option value="jadx">JADX</option><option value="cfr">CFR</option><option value="ghidra_headless">Ghidra</option><option value="jni_table">JNI table</option><option value="jni_register">JNI register</option></select></label>
+        <label>Tool output <textarea id="residual-tool-text" rows="8"></textarea></label>
+        <label>Reference source (optional) <textarea id="residual-target-text" rows="8"></textarea></label>
+        <label>JNI method (optional) <input id="residual-jni-method" placeholder="e.g. decryptAssetBlob"></label>
+        <label>JNI descriptor (optional) <input id="residual-jni-descriptor" placeholder="e.g. ([B)[B"></label>
+        <button id="residual-run">Run residual model</button>
+        <span id="residual-run-status" class="muted"></span>
+        <div id="residual-scores" class="scroll"></div>
+        <p class="muted">Auxiliary candidate/failure/confidence scores are experimental. Candidate exact is authoritative when a reference is supplied; the canonical JNI signature (when method/descriptor are provided) is deterministic.</p>
+        <pre id="residual-generated" class="code scroll"></pre>
+      </article>
+    </section>
+
+    <section id="view-foundation" class="view">
+      <h2>Unified foundation model</h2>
+      <article class="card">
+        <h3>Model state</h3>
+        <div id="foundation-status" class="scroll"></div>
+      </article>
+      <div class="grid two">
+        <article class="card"><h3>Architecture and parameters</h3><div id="foundation-architecture" class="scroll"></div></article>
+        <article class="card"><h3>Modalities</h3><div id="foundation-modalities" class="scroll"></div></article>
+      </div>
+      <article class="card"><h3>Training runs</h3><div id="foundation-runs" class="scroll"></div></article>
+      <article class="card"><h3>Latest evaluation</h3><div id="foundation-evaluation" class="scroll"></div></article>
+      <article class="card"><h3>Reconstruction confidence and unresolved findings</h3><div id="foundation-unresolved" class="scroll"></div></article>
+      <article class="card"><h3>Checkpoints</h3><div id="foundation-checkpoints" class="scroll"></div></article>
+    </section>
+  </main>
+  <script src="/static/app.js"></script>
+</body>
+</html>
