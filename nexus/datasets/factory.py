@@ -455,7 +455,7 @@ def generate_dataset(
             "jni_fixtures": "separate path; not generated in this dataset build",
         },
         "limitations": [
-            "Only x86-64 builds are produced on this host.",
+            "Only x86-64 builds are produced on the build host.",
             "No behavioral tests are executed.",
             "Function labels are symbol/disassembly candidates, not source-verified boundaries.",
             "Synthetic fixtures do not represent real-world project complexity.",

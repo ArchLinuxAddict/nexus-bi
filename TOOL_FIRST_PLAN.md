@@ -121,8 +121,8 @@ One unified model with tool-aware inputs:
 - Decoder only where tools cannot produce a candidate; do not train it to
   imitate Ghidra output wholesale.
 
-Hardware reality: this host has 8 vCPU, 31 GB RAM and no GPU. A compact residual
-model is feasible. Foundation-scale training needs a GPU and is not assumed.
+Reference training constraint: the compact residual model is CPU-trainable.
+Foundation-scale training needs a GPU and is not assumed by this plan.
 
 ## Evaluation
 
@@ -189,8 +189,8 @@ Do not destroy the only working fallback before the replacement is validated.
 - Run Ghidra for native and JADX/CFR for Java; model ranks and repairs.
 - Dashboard shows tool outputs, disagreements, residual suggestions and compile
   verification side by side.
-- Acceptance: user-uploaded aarch64 library reconstructs through Ghidra and
-  compiles; Java APK reconstructs through JADX/CFR.
+- Acceptance: a user-supplied aarch64 library reconstructs through Ghidra and
+  compiles; a Java APK reconstructs through JADX/CFR.
 
 ### M3 — real-world acquisition
 

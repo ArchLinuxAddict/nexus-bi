@@ -29,11 +29,12 @@ committed to Git.
 
 `artifacts/residual_runs/ACTIVE` selects the checkpoint used by the dashboard
 and `/v1/residual/infer`. If it is absent, the runtime prefers the v15 release
-path and then the newest local checkpoint.
+path and then the newest checkpoint under `artifacts/residual_runs`.
 
 ## Datasets
 
-Datasets are rebuilt locally; raw data is not stored in Git. See
+Datasets are rebuilt from your own analysis artifacts; raw data is not stored in
+Git. See
 `docs/dataset_summaries/` for counts and limitations.
 
 - **C/Java residual pairs:** source/binary builds with Ghidra/JADX/CFR tool

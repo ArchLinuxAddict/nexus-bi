@@ -628,7 +628,7 @@ def _compute_gate(gate, config: FoundationConfig, model, local: dict[str, Any]) 
         "disk_free_gib": round(disk_free, 2),
         "cpu_pilot_available": cpu_pilot_available,
         "gpu_available_for_foundation_scale": foundation_gpu,
-        "note": "CPU fp32 is the only verifiable backend on this host; BF16 is not claimed. The estimate uses the mean of up to 12 varied train batches (first warm-up discarded) with a 1.25 safety factor, and includes data loading, forward, evidence-masked forward, losses and backward, but no optimizer step. The raw p90 and max show tail risk from long functions.",
+        "note": "CPU fp32 is the only verifiable backend on the configured system; BF16 is not claimed. The estimate uses the mean of up to 12 varied train batches (first warm-up discarded) with a 1.25 safety factor, and includes data loading, forward, evidence-masked forward, losses and backward, but no optimizer step. The raw p90 and max show tail risk from long functions.",
     }
     return _gate("compute", not blockers, evidence, blockers)
 

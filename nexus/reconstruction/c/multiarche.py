@@ -6,7 +6,7 @@ single return value for AAPCS32/AAPCS64/RISC-V functions.  Anything involving
 flags, calls, indirect memory, vectors, PC-relative addressing or unresolved
 registers becomes an explicit unresolved stub with evidence.
 
-The generated project compiles on the host because the output is plain C.  It
+The generated project compiles on the build host because the output is plain C.  It
 does not prove behavioral equivalence or the original source structure.
 """
 
@@ -453,7 +453,7 @@ def reconstruct_c_multiarche(
         "limitations": [
             "Multi-architecture reconstruction covers straight-line arithmetic, moves and simple loads/stores only.",
             "Flags, calls, branches, vectors, PC-relative addressing and indirect memory are unresolved.",
-            "Generated C compiles on the host but has not been executed against original behavior.",
+            "Generated C compiles on the build host but has not been executed against original behavior.",
         ],
     }
     for function in selected:

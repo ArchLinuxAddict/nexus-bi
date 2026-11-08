@@ -210,7 +210,7 @@ def _candidate(
             "Compilation is not behavioral agreement.",
             "Finite-domain tests are not universal equivalence.",
             "Universal equivalence is never claimed without a valid proof.",
-            "Untrusted artifacts are not executed on the host.",
+            "Untrusted artifacts are not executed on the analysis host.",
         ],
     }
 

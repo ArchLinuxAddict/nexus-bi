@@ -69,8 +69,8 @@ The runtime also falls back to `artifacts/residual_runs/residual-v15-joint/best.
 
 ## Train and evaluate
 
-The training corpus is rebuilt from local artifacts; raw datasets and tool
-outputs are not stored in Git.
+The training corpus is rebuilt from your own analysis artifacts; raw datasets and
+tool outputs are not stored in Git.
 
 ```bash
 .venv/bin/python scripts/build_jni_facade_dataset.py --path /path/to/native-libs --out artifacts/dataset/jni_facade_v1
@@ -104,11 +104,11 @@ forced exact match, generation exact match, and optional generated text.
 - [`REALWORLD_SO_DATASET.md`](REALWORLD_SO_DATASET.md) — real-world catalog.
 - [`CHANGELOG.md`](CHANGELOG.md) — changes.
 
-## Hardware
+## Training profile
 
-8 vCPU, 31 GB RAM, no GPU in the reference environment. The compact profile is
-CPU-trainable; larger profiles are supported by configuration but were not
-trained here.
+The released checkpoint was trained CPU-only with the compact profile. GPU
+profiles are supported by configuration but were not trained for this release.
+Inference runs on CPU; no specific workstation is required.
 
 ## License
 

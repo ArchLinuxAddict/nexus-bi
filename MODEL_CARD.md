@@ -89,8 +89,9 @@ Additional observations:
   the training data.
 - Auxiliary scores are experimental; `candidate_exact` against a reference is
   authoritative, and canonical JNI signatures are deterministic.
-- The model is CPU-trained and compact; larger models or more diverse data may
-  improve results but were not trained here.
+- The released model was trained CPU-only with the compact profile; larger
+  models or more diverse data may improve results but were not trained for this
+  release.
 
 ## Ethical and legal use
 

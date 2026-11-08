@@ -36,7 +36,7 @@ def authorize_local_config(local: dict[str, Any], vocab, hardware: dict[str, Any
     elif run_mode == "final":
         if gpu_backend == "cpu_fp32":
             status = "BLOCKED_BY_COMPUTE"
-            reason = "final training requires a supported GPU backend; this host is CPU-only"
+            reason = "final training requires a supported GPU backend; the configured backend is CPU-only"
         else:
             status = "AUTHORIZED_FINAL"
             reason = "final training authorized on the detected backend"

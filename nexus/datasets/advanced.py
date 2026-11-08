@@ -187,7 +187,7 @@ def build_multiarche_dataset(out_dir: str | Path) -> dict[str, Any]:
             "architectures": sorted({item["architecture"] for item in records}),
         },
         "limitations": [
-            "Cross-compiled relocatable objects are analyzed; not every target is linked into a shared object on this host.",
+            "Cross-compiled relocatable objects are analyzed; not every target is linked into a shared object on the build host.",
             "Reconstruction is compiled on the host and is not behaviorally verified against the target architecture.",
             "The dataset is a small controlled pilot, not a broad real-world corpus.",
         ],
