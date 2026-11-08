@@ -61,6 +61,7 @@ Ghidra/JNI reconstruction; the **Java/APK** tab exposes JADX/CFR.
 mkdir -p checkpoints
 curl -L -o checkpoints/residual-v15-joint-best.pt \
   https://github.com/ArchLinuxAddict/nexus-bi/releases/download/v0.1.0/residual-v15-joint-best.pt
+mkdir -p artifacts/residual_runs
 printf '%s\n' "$PWD/checkpoints/residual-v15-joint-best.pt" > artifacts/residual_runs/ACTIVE
 ```
 
